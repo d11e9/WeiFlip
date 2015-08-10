@@ -1,0 +1,114 @@
+[
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "random",
+        "type": "bytes32"
+      },
+      {
+        "name": "blockNumber",
+        "type": "uint256"
+      },
+      {
+        "name": "heads",
+        "type": "address"
+      },
+      {
+        "name": "tails",
+        "type": "address"
+      }
+    ],
+    "name": "prime",
+    "outputs": [
+      {
+        "name": "flipId",
+        "type": "uint256"
+      }
+    ],
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "coinFlips",
+    "outputs": [
+      {
+        "name": "random",
+        "type": "bytes32"
+      },
+      {
+        "name": "blockNumber",
+        "type": "uint256"
+      },
+      {
+        "name": "value",
+        "type": "uint256"
+      },
+      {
+        "name": "heads",
+        "type": "address"
+      },
+      {
+        "name": "tails",
+        "type": "address"
+      }
+    ],
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "nonce",
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "flipId",
+        "type": "uint256"
+      }
+    ],
+    "name": "reveal",
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint8"
+      }
+    ],
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "random",
+        "type": "bytes32"
+      },
+      {
+        "name": "blockNumber",
+        "type": "uint256"
+      }
+    ],
+    "name": "prime",
+    "outputs": [
+      {
+        "name": "flipId",
+        "type": "uint256"
+      }
+    ],
+    "type": "function"
+  }
+]

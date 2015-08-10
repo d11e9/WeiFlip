@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+	<head>
+		<title>WeiFlip</title>
+		<style>
+			body {
+				padding: 2em;
+				max-width: 40em;
+				margin: 0 auto;
+			}
+
+			.header {
+				text-align: center;
+				margin-bottom: 3em;
+			}
+		</style>
+	</head>
+	<body>
+		
+		<div class="header">
+			<img src="assets/img/flip.gif" alt="WeiFlip">
+			<h1>WeiFlip</h1>
+			<p>An Ethereum coin flip contract</p>
+		</div>
+		
+		<h2>Getting Started</h2>
+		<p>This contract is intended to be used by other contracts and not necesariliy by end users. Using <em>WeiFlip</em> is made up of 2 contract calls made in sequence.</p>
+		<p>The coin flip is perfomed by providing the contract with a <code>random</code> value and a <code>blockNumber</code> which must be at least <code>n (default: 7)</code> blocks in the future.</p>
+		<p>If sending value with your coin flip you must also pass in a <code>heads_address</code> and a <code>tails_address</code> to which all value will be sent depending on the outcome of the flip.</p>
+		<p>After <code>n</code> blocks anyone can call the <code>reveal</code> method with <code>flipId</code> (returned from previous call and stored in the contract) to have the outcome (and relevent value) sent to the appropriate address.</p>
+		
+		<ul>
+			<li>
+				<p><strong>Prime:</strong></p>
+				<code>WeiFlip.prime( uint random, uint blockNumber, address heads, address tails ) </code>
+				<p>Returns a <code>flipId</code> for use in the next call, or <code>0</code> if error.</p>
+			</li>
+			<li>
+				<p><strong>Reveal:</strong></p>
+				<code>WeiFlip.reveal( uint flipId )</code>
+				<p>Returns <code>1</code> or <code>2</code>, for heads or tails, or <code>0</code> if error.</p>
+			</li>
+		</ul>
+
+		<h2>Details</h2>
+		<p>Source: <a href="src/w2f3.sol">w2f3.sol</a></p>
+		<p>ABI: <a href="src/w2f3.json">w2f3.json</a></p>
+
+	</body>
+</html>

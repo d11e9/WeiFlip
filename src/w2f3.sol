@@ -1,8 +1,7 @@
 contract WeiFlip {
 
     uint constant distance = 6; // distance required in blocks between prime call and reveal call
-    uint public nonce = 0; // increments for each coinflip
-    uint public blockCreated = block.number;
+    uint public nonce = 1; // increments for each coinflip
 
     struct CoinFlip {
         bytes32 random;
@@ -18,19 +17,23 @@ contract WeiFlip {
         Tails
     }
 
-    mapping (uint=> CoinFlip ) public coinFlips;
+    mapping ( uint=> CoinFlip ) public coinFlips;
 
-    function prime(bytes32 random, uint blockNumber, address heads, address tails)  returns (bool ok){
-        if (blockNumber < block.number + distance) {
-            // blockNumber must be greater than $distance in the future
-            return false;
-        }
-        var flipId = nonce++;
-        coinFlips[ flipId ] = CoinFlip( random, blockNumber, msg.value, heads, tails);
-        return true;
+    function prime(bytes32 random, uint blockNumber) returns (uint flipId) {
+        return this.prime( random, blockNumber, msg.sender, msg.sender );
     }
 
-    function reveal(uint flipId) returns (result ok) {
+    function prime(bytes32 random, uint blockNumber, address heads, address tails)  returns (uint flipId) {
+        if (blockNumber < block.number + distance) {
+            // blockNumber must be greater than $distance in the future
+            return 0;
+        }
+        flipId = nonce++;
+        coinFlips[ flipId ] = CoinFlip( random, blockNumber, msg.value, heads, tails);
+        return flipId;
+    }
+
+    function reveal(uint flipId) returns (result) {
         
         CoinFlip flip = coinFlips[flipId];
         if (flip.blockNumber + distance < block.number) {
@@ -38,9 +41,9 @@ contract WeiFlip {
             return result.Error;
         }
         var blockHash = block.blockhash( flip.blockNumber );
-        var newHash = sha3( blockHash, flip.random );
+        var isHeads = uint160( sha3( blockHash, flip.random ) ) % 2 == 1;
 
-        if (uint160(newHash) % 2 == 1) {
+        if (isHeads) {
             flip.heads.send( flip.value );
             delete coinFlips[flipId];
             return result.Heads;
