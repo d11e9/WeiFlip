@@ -38,10 +38,8 @@ contract WeiFlip {
         }
         var blockHash = block.blockhash( flip.blockNumber );
         var newHash = sha3( blockHash, flip.random );
-        // TODO: line below is broken:
-        // Type error: Indexed expression has to be a type, mapping or array (is bytes32)
-        var newRandom = newHash.Get(0);
-        if ((newRandom / 0xff) & 0x1) result.Heads;
+
+        if (uint160(newHash) % 2 == 1) result.Heads;
         else result.Tails;
     }
 }
