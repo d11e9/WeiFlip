@@ -1,7 +1,8 @@
 contract WeiFlip {
 
     uint constant distance = 6; // distance required in blocks between prime call and reveal call
-    uint nonce = 0; // increments for each coinflip
+    uint public nonce = 0; // increments for each coinflip
+    uint public blockCreated = block.number;
 
     struct CoinFlip {
         bytes32 random;
@@ -17,7 +18,7 @@ contract WeiFlip {
         Tails
     }
 
-    mapping (uint => CoinFlip ) coinFlips;
+    mapping (uint=> CoinFlip ) public coinFlips;
 
     function prime(bytes32 random, uint blockNumber, address heads, address tails)  returns (bool ok){
         if (blockNumber < block.number + distance) {
@@ -25,7 +26,7 @@ contract WeiFlip {
             return false;
         }
         var flipId = nonce++;
-        coinFlips[ flipId ] = CoinFlip( random, blockNumber, msg.value, heads, tails );
+        coinFlips[ flipId ] = CoinFlip( random, blockNumber, msg.value, heads, tails);
         return true;
     }
 
@@ -39,7 +40,15 @@ contract WeiFlip {
         var blockHash = block.blockhash( flip.blockNumber );
         var newHash = sha3( blockHash, flip.random );
 
-        if (uint160(newHash) % 2 == 1) result.Heads;
-        else result.Tails;
+        if (uint160(newHash) % 2 == 1) {
+            flip.heads.send( flip.value );
+            delete coinFlips[flipId];
+            return result.Heads;
+        } else {
+            flip.tails.send( flip.value );
+            delete coinFlips[flipId];
+            return result.Tails;
+        }
+        
     }
 }
